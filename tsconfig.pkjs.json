@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "ES6", //note this breaks iOS, needs to be ES5 for iOS
+    "module": "CommonJS",
+    "strict": true,
+    "outDir": "src/pkjs",
+    "rootDir": "src/pkjs-src",
+    "declaration": false,
+    "esModuleInterop": true
+  },
+  "include": ["src/pkjs-src/**/*.ts"]
+}

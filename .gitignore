@@ -1,0 +1,13 @@
+# compiled from src/pkjs-src/ — do not edit by hand
+src/pkjs/
+
+# build output
+build/
+node_modules/
+dist/
+dist.zip
+
+# Ignore waf lock file
+.lock-waf*
+
+.ai/

@@ -1,0 +1,36 @@
+{
+  "name": "thin-business",
+  "author": "MakeAwesomeHappen",
+  "version": "1.0.0",
+  "keywords": ["pebble-app"],
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^6.0.0"
+  },
+  "scripts": {
+    "type-check": "tsc -p tsconfig.embeddedjs.json --noEmit && tsc -p tsconfig.pkjs.json --noEmit",
+    "build:pkjs": "tsc -p tsconfig.pkjs.json",
+    "build": "npm run build:pkjs && pebble build"
+  },
+  "pebble": {
+    "displayName": "thin-business",
+    "uuid": "b115bfb9-1814-4729-83df-e44fc630027e",
+    "projectType": "moddable",
+    "sdkVersion": "3",
+    "enableMultiJS": true,
+    "targetPlatforms": [
+      "emery",
+      "gabbro"
+    ],
+    "watchapp": {
+      "watchface": true
+    },
+    "messageKeys": [
+      "dummy"
+    ],
+    "resources": {
+      "media": []
+    }
+  }
+}
