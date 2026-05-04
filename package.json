@@ -11,7 +11,7 @@
   "scripts": {
     "type-check": "tsc -p tsconfig.embeddedjs.json --noEmit && tsc -p tsconfig.pkjs.json --noEmit",
     "build:pkjs": "tsc -p tsconfig.pkjs.json",
-    "build": "npm run build:pkjs && pebble build"
+    "build": "bun run build:pkjs && bin/pebble-build"
   },
   "pebble": {
     "displayName": "thin-business",
