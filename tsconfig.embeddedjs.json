@@ -6,23 +6,12 @@
     "strict": true,
     "noEmit": true,
     "skipLibCheck": true,
-    "lib": ["ES2020"],
-    "paths": {
-      "commodetto/Poco": [
-        "/Users/parth/Library/Application Support/Pebble SDK/SDKs/current/toolchain/moddable/typings/commodetto/Poco.d.ts"
-      ],
-      "commodetto/Bitmap": [
-        "/Users/parth/Library/Application Support/Pebble SDK/SDKs/current/toolchain/moddable/typings/commodetto/Bitmap.d.ts"
-      ],
-      "pebble/battery": [
-        "/Users/parth/Library/Application Support/Pebble SDK/SDKs/current/toolchain/moddable/typings/pebble/battery.d.ts"
-      ],
-      "pebble/message": [
-        "/Users/parth/Library/Application Support/Pebble SDK/SDKs/current/toolchain/moddable/typings/pebble/message.d.ts"
-      ]
-    }
+    "lib": ["ES2020"]
   },
   "files": [
+    "/Users/parth/Library/Application Support/Pebble SDK/SDKs/current/toolchain/moddable/typings/commodetto/PixelsOut.d.ts",
+    "/Users/parth/Library/Application Support/Pebble SDK/SDKs/current/toolchain/moddable/typings/commodetto/Bitmap.d.ts",
+    "/Users/parth/Library/Application Support/Pebble SDK/SDKs/current/toolchain/moddable/typings/commodetto/Poco.d.ts",
     "/Users/parth/Library/Application Support/Pebble SDK/SDKs/current/toolchain/moddable/typings/pebble/global.d.ts",
     "/Users/parth/Library/Application Support/Pebble SDK/SDKs/current/toolchain/moddable/typings/pebble/poco.d.ts",
     "/Users/parth/Library/Application Support/Pebble SDK/SDKs/current/toolchain/moddable/typings/pebble/battery.d.ts",

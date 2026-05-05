@@ -1,7 +1,7 @@
 {
   "name": "thin-business",
-  "author": "MakeAwesomeHappen",
-  "version": "1.0.0",
+  "author": "JvmName",
+  "version": "0.0.1",
   "keywords": ["pebble-app"],
   "private": true,
   "dependencies": {},
@@ -27,8 +27,13 @@
       "watchface": true
     },
     "messageKeys": [
-      "dummy"
+      "WEATHER_REQUEST",
+      "WEATHER_TEMP_F",
+      "WEATHER_CONDITION",
+      "WEATHER_IS_DAY",
+      "CITY_NAME"
     ],
+    "capabilities": ["location", "health"],
     "resources": {
       "media": []
     }

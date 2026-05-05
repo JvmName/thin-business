@@ -1,0 +1,7 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.embeddedjs.json" },
+    { "path": "./tsconfig.pkjs.json" }
+  ]
+}
