@@ -192,4 +192,20 @@ Pebble.addEventListener("appmessage", (e) => {
   if (e.payload["WEATHER_REQUEST"] === 1) {
     doFetch();
   }
+
+  // Health relay: C → phone → watch JS
+  const relay: Record<string, number> = {};
+  if (e.payload["HEALTH_STEPS"] !== undefined)
+    relay["HEALTH_STEPS"] = e.payload["HEALTH_STEPS"] as number;
+  if (e.payload["HEALTH_DISTANCE_M"] !== undefined)
+    relay["HEALTH_DISTANCE_M"] = e.payload["HEALTH_DISTANCE_M"] as number;
+  if (e.payload["HEALTH_HR_BPM"] !== undefined)
+    relay["HEALTH_HR_BPM"] = e.payload["HEALTH_HR_BPM"] as number;
+
+  if (Object.keys(relay).length > 0) {
+    Pebble.sendAppMessage(relay,
+      () => console.log("health relay: forwarded"),
+      (err) => console.error("health relay: forward failed " + JSON.stringify(err))
+    );
+  }
 });

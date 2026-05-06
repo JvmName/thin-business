@@ -1,5 +1,5 @@
 import Poco from "commodetto/Poco";
-import Battery, { type BatterySample } from "embedded:sensor/Battery";
+import Battery from "embedded:sensor/Battery";
 import Message from "pebble/message";
 
 // ── Renderer ─────────────────────────────────────────────────────────────────
@@ -39,6 +39,7 @@ const Layout = {
   ROW_CITY:    110, // height ~20
   ROW_WEATHER: 134, // height ~24
   ROW_STEPS:   162, // height ~20, bottom at 182
+  ROW_HR:      182, // height ~20, bottom at 202
 } as const;
 
 // ── Condition enum ────────────────────────────────────────────────────────────
@@ -64,10 +65,11 @@ const state = {
   condition:          WeatherCondition.Unknown,
   isDay:              1,
   cityName:           "",
-  battery:            null as BatterySample | null,
+  battery:            null as { percent: number; charging: boolean; plugged: boolean } | null,
   bluetoothConnected: watch.connected.app,
   steps:              null as number | null,
-  distanceMiles:      null as number | null,
+  distanceTenthsMiles: null as number | null,
+  heartRateBpm:       null as number | null,
 };
 
 // ── AppMessage ────────────────────────────────────────────────────────────────
@@ -78,13 +80,19 @@ let weatherRequested = false;
 // eslint-disable-next-line prefer-const
 let appMsg: Message;
 appMsg = new Message({
-  keys: ["WEATHER_REQUEST", "WEATHER_TEMP_F", "WEATHER_CONDITION", "WEATHER_IS_DAY", "CITY_NAME"],
+  keys: ["WEATHER_REQUEST", "WEATHER_TEMP_F", "WEATHER_CONDITION", "WEATHER_IS_DAY", "CITY_NAME", "HEALTH_STEPS", "HEALTH_DISTANCE_M", "HEALTH_HR_BPM"],
   onReadable() {
     const map = appMsg.read();
     if (map.has("WEATHER_TEMP_F"))    state.tempF     = map.get("WEATHER_TEMP_F")    as number;
     if (map.has("WEATHER_CONDITION")) state.condition = map.get("WEATHER_CONDITION") as WeatherCondition;
     if (map.has("WEATHER_IS_DAY"))    state.isDay     = map.get("WEATHER_IS_DAY")    as number;
     if (map.has("CITY_NAME"))         state.cityName  = map.get("CITY_NAME")         as string;
+    if (map.has("HEALTH_STEPS"))      state.steps     = map.get("HEALTH_STEPS")      as number;
+    if (map.has("HEALTH_DISTANCE_M")) {
+      const meters = map.get("HEALTH_DISTANCE_M") as number;
+      state.distanceTenthsMiles = Math.floor(meters * 10 / 1609);
+    }
+    if (map.has("HEALTH_HR_BPM"))    state.heartRateBpm = map.get("HEALTH_HR_BPM") as number;
     draw();
   },
   onWritable() {
@@ -157,7 +165,8 @@ function formatDate(d: Date): string {
 function formatSteps(): string {
   if (state.steps === null) return "-- steps  -- mi";
   const s = state.steps.toLocaleString();
-  const mi = state.distanceMiles !== null ? state.distanceMiles.toFixed(1) : "--";
+  const tenths = state.distanceTenthsMiles;
+  const mi = tenths !== null ? `${Math.floor(tenths / 10)}.${tenths % 10}` : "--";
   return `${s} steps  ${mi} mi`;
 }
 
@@ -263,6 +272,13 @@ function drawSteps(): void {
   render.drawText(text, Fonts.small, Colors.gray, centerX(tw), Layout.ROW_STEPS, tw);
 }
 
+function drawHeartRate(): void {
+  const bpm = state.heartRateBpm;
+  const text = bpm !== null && bpm > 0 ? `${bpm} bpm` : "-- bpm";
+  const tw = render.getTextWidth(text, Fonts.small);
+  render.drawText(text, Fonts.small, Colors.red, centerX(tw), Layout.ROW_HR, tw);
+}
+
 // ── Main draw ─────────────────────────────────────────────────────────────────
 
 function draw(): void {
@@ -274,6 +290,7 @@ function draw(): void {
   drawCity();
   drawWeather();
   drawSteps();
+  drawHeartRate();
   render.end();
 }
 

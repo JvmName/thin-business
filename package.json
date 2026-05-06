@@ -31,7 +31,10 @@
       "WEATHER_TEMP_F",
       "WEATHER_CONDITION",
       "WEATHER_IS_DAY",
-      "CITY_NAME"
+      "CITY_NAME",
+      "HEALTH_STEPS",
+      "HEALTH_DISTANCE_M",
+      "HEALTH_HR_BPM"
     ],
     "capabilities": ["location", "health"],
     "resources": {
