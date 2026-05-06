@@ -18,6 +18,7 @@
     "/Users/parth/Library/Application Support/Pebble SDK/SDKs/current/toolchain/moddable/typings/pebble/message.d.ts"
   ],
   "include": [
-    "src/embeddedjs/**/*.ts"
+    "src/embeddedjs/**/*.ts",
+    "src/embeddedjs/**/*.d.ts"
   ]
 }

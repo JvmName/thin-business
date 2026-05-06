@@ -1,8 +1,21 @@
 // ─── Types ────────────────────────────────────────────────────────────────────
 
+const enum WeatherCondition {
+  Clear           = 0,
+  FewClouds       = 1,
+  ScatteredClouds = 2,
+  BrokenClouds    = 3,
+  ShowerRain      = 4,
+  Rain            = 5,
+  Thunderstorm    = 6,
+  Snow            = 7,
+  Mist            = 8,
+  Unknown         = 255,
+}
+
 interface WeatherData {
   tempF: number;
-  condition: number;
+  condition: WeatherCondition;
   isDay: number;
 }
 
@@ -12,7 +25,7 @@ interface WeatherProvider {
 
 interface WeatherCache {
   tempF: number;
-  condition: number;
+  condition: WeatherCondition;
   isDay: number;
   cityName: string;
   fetchedAt: number;
@@ -20,20 +33,18 @@ interface WeatherCache {
 
 
 // ─── WMO code → condition enum ────────────────────────────────────────────────
-// Condition enum: 0=Clear, 1=FewClouds, 2=ScatteredClouds, 3=BrokenClouds,
-//   4=ShowerRain, 5=Rain, 6=Thunderstorm, 7=Snow, 8=Mist, 255=Unknown
 
-function wmoToCondition(wmo: number): number {
-  if (wmo === 0) return 0;      // Clear
-  if (wmo === 1) return 1;      // FewClouds
-  if (wmo === 2) return 2;      // ScatteredClouds
-  if (wmo === 3) return 3;      // BrokenClouds
-  if (wmo === 45 || wmo === 48) return 8; // Mist
-  if (wmo >= 51 && wmo <= 67) return 5;  // Rain
-  if ((wmo >= 71 && wmo <= 77) || (wmo >= 85 && wmo <= 86)) return 7; // Snow
-  if (wmo >= 80 && wmo <= 82) return 4;  // ShowerRain
-  if (wmo === 95) return 6;     // Thunderstorm
-  return 255;                   // Unknown
+function wmoToCondition(wmo: number): WeatherCondition {
+  if (wmo === 0) return WeatherCondition.Clear;
+  if (wmo === 1) return WeatherCondition.FewClouds;
+  if (wmo === 2) return WeatherCondition.ScatteredClouds;
+  if (wmo === 3) return WeatherCondition.BrokenClouds;
+  if (wmo === 45 || wmo === 48) return WeatherCondition.Mist;
+  if (wmo >= 51 && wmo <= 67) return WeatherCondition.Rain;
+  if ((wmo >= 71 && wmo <= 77) || (wmo >= 85 && wmo <= 86)) return WeatherCondition.Snow;
+  if (wmo >= 80 && wmo <= 82) return WeatherCondition.ShowerRain;
+  if (wmo === 95) return WeatherCondition.Thunderstorm;
+  return WeatherCondition.Unknown;
 }
 
 // ─── Open-Meteo provider ──────────────────────────────────────────────────────
@@ -101,7 +112,7 @@ function saveCache(cache: WeatherCache): void {
 // ─── sendAppMessage wrapper ───────────────────────────────────────────────────
 function sendWeather(
   tempF: number,
-  condition: number,
+  condition: WeatherCondition,
   isDay: number,
   cityName: string
 ): void {
@@ -143,7 +154,7 @@ async function doFetch(): Promise<void> {
     if (cached) {
       sendWeather(cached.tempF, cached.condition, cached.isDay, "No GPS");
     } else {
-      sendWeather(0, 255, 1, "No GPS");
+      sendWeather(0, WeatherCondition.Unknown, 1, "No GPS");
     }
     return;
   }
