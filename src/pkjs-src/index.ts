@@ -40,10 +40,11 @@ function wmoToCondition(wmo: number): WeatherCondition {
   if (wmo === 2) return WeatherCondition.ScatteredClouds;
   if (wmo === 3) return WeatherCondition.BrokenClouds;
   if (wmo === 45 || wmo === 48) return WeatherCondition.Mist;
-  if (wmo >= 51 && wmo <= 67) return WeatherCondition.Rain;
+  if (wmo >= 51 && wmo <= 57) return WeatherCondition.ShowerRain;
+  if (wmo >= 61 && wmo <= 67) return WeatherCondition.Rain;
   if ((wmo >= 71 && wmo <= 77) || (wmo >= 85 && wmo <= 86)) return WeatherCondition.Snow;
   if (wmo >= 80 && wmo <= 82) return WeatherCondition.ShowerRain;
-  if (wmo === 95) return WeatherCondition.Thunderstorm;
+  if (wmo === 95 || wmo === 96 || wmo === 99) return WeatherCondition.Thunderstorm;
   return WeatherCondition.Unknown;
 }
 
